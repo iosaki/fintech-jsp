@@ -1,0 +1,44 @@
+html,
+body {
+    height: 100vh;
+    margin: 0;
+}
+
+.sidemenu {
+    height: 100vh;
+}
+
+@media (min-width: 992px) {
+    .main-content {
+        margin-left: 200px;
+        height: 100vh;
+    }
+}
+
+.main-content {
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.nav-link.active {
+    background-image: linear-gradient(
+            270deg,
+            #0062ff 0%,
+            #0044b3 105.15%
+    ) !important;
+    color: white !important;
+}
+
+.link-dark {
+    color: #0044b3 !important;
+}
+
+.btn-custom {
+    color: #0044b3 !important;
+    border-color: #0044b3 !important;
+}
+
+.btn-custom:hover {
+    background-color: #0044b3 !important;
+    color: #fff !important;
+}
