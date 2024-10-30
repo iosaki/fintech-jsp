@@ -31,6 +31,6 @@
     </c:forEach>
     </tbody>
 </table>
-<a href="index.jsp">Voltar para a Home</a>
+<a href="../../index.jsp">Voltar para a Home</a>
 </body>
 </html>

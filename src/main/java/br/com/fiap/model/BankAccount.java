@@ -68,4 +68,14 @@ public class BankAccount {
     public void setBanksId(int banksId) {
         this.banksId = banksId;
     }
+
+    private String logoUrl;
+
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
+    }
 }

@@ -1,6 +1,5 @@
 package br.com.fiap.dao;
 
-import br.com.fiap.factory.ConnectionFactory;
 import br.com.fiap.model.Transaction;
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,9 +8,7 @@ import java.util.List;
 public class TransactionDao {
     private Connection connection;
 
-    public TransactionDao() throws SQLException {
-        connection = ConnectionFactory.getConnection();
-    }
+
 
     // Metodo para adicionar uma nova transação
     public void add(Transaction transaction) throws SQLException {

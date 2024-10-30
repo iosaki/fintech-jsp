@@ -6,17 +6,20 @@ public class Bank {
     private int id;
     private String name;
     private Timestamp createdAt;
+    private String logoUrl;
 
     // Construtores
-    public Bank(int id, String name, Timestamp createdAt) {
+    public Bank(int id, String name, Timestamp createdAt, String logoUrl) {
         this.id = id;
         this.name = name;
         this.createdAt = createdAt;
+        this.logoUrl = logoUrl;
     }
 
-    public Bank(String name, Timestamp createdAt) {
+    public Bank(String name, Timestamp createdAt, String logoUrl) {
         this.name = name;
         this.createdAt = createdAt;
+        this.logoUrl = logoUrl;
     }
 
     public Bank() {
@@ -38,6 +41,10 @@ public class Bank {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getLogoUrl() { return logoUrl; }
+
+    public void setLogoUrl(String logoUrl) { this.logoUrl = logoUrl; }
 
     public Timestamp getCreatedAt() {
         return createdAt;

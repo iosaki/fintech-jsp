@@ -1,6 +1,6 @@
 package br.com.fiap.dao;
 
-import br.com.fiap.factory.ConnectionFactory;
+
 import br.com.fiap.model.Card;
 
 import java.sql.Connection;
@@ -13,11 +13,7 @@ import java.util.List;
 public class CardDao {
 
     private Connection connection;
-
-    public CardDao() throws SQLException {
-        connection = ConnectionFactory.getConnection();
-    }
-
+    
     // Método para adicionar um novo cartão
     public void add(Card card) throws SQLException {
         String sql = "INSERT INTO cards (id, bankAccount_id, name) VALUES (?, ?, ?)";

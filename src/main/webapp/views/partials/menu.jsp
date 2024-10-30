@@ -10,15 +10,16 @@
   <hr />
   <ul class="nav nav-pills flex-column mb-auto">
     <li class="nav-item">
-      <a href="/" class="nav-link <%= currentPath.equals("/") ? "active" : "" %>">
+      <a href="${pageContext.request.contextPath}/views/pages/index.jsp"
+         class="nav-link <%= currentPath.endsWith("/index.jsp") ? "active" : "" %>">
         <i class="bi bi-house-door p-1"></i>
         home
       </a>
     </li>
     <li>
-      <a href="/carteira" class="nav-link <%= currentPath.equals("/carteira") ? "active" : "link-dark" %>">
+      <a href="${pageContext.request.contextPath}/views/pages/wallet/list.jsp" class="nav-link <%= currentPath.equals("/carteira") ? "active" : "link-dark" %>">
         <i class="bi bi-wallet-fill p-1"></i>
-        carteira
+        carteiras
       </a>
     </li>
     <li>
