@@ -9,16 +9,26 @@ public class BankAccount {
     private String userEmail;
     private Timestamp createdAt;
     private int banksId;
+    private String logoUrl;
+    private String bankName;
 
-    // Construtor completo
-    public BankAccount(int id, String name, int bankId, String userEmail, Timestamp createdAt, int banksId) {
+    // Atualizar construtores e getters/setters
+    public BankAccount(int id, String name, int bankId, String userEmail, Timestamp createdAt, int banksId, String logoUrl, String bankName) {
         this.id = id;
         this.name = name;
         this.bankId = bankId;
         this.userEmail = userEmail;
         this.createdAt = createdAt;
         this.banksId = banksId;
+        this.logoUrl = logoUrl;
+        this.bankName = bankName;
     }
+
+    // Construtor sem logoUrl (caso não precise dela)
+    public BankAccount(int id, String name, int bankId, String userEmail, Timestamp createdAt, int banksId) {
+        this(id, name, bankId, userEmail, createdAt, banksId, null, null);
+    }
+
 
     // Getters e setters
     public int getId() {
@@ -69,13 +79,19 @@ public class BankAccount {
         this.banksId = banksId;
     }
 
-    private String logoUrl;
-
     public String getLogoUrl() {
         return logoUrl;
     }
 
     public void setLogoUrl(String logoUrl) {
         this.logoUrl = logoUrl;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
     }
 }

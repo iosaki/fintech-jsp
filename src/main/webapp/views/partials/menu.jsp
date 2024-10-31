@@ -13,13 +13,13 @@
       <a href="${pageContext.request.contextPath}/views/pages/index.jsp"
          class="nav-link <%= currentPath.endsWith("/index.jsp") ? "active" : "" %>">
         <i class="bi bi-house-door p-1"></i>
-        home
+        homy
       </a>
     </li>
     <li>
-      <a href="${pageContext.request.contextPath}/views/pages/wallet/list.jsp" class="nav-link <%= currentPath.equals("/carteira") ? "active" : "link-dark" %>">
+      <a href="${pageContext.request.contextPath}/bankaccount" class="nav-link <%= currentPath.equals("/carteira") ? "active" : "link-dark" %>">
         <i class="bi bi-wallet-fill p-1"></i>
-        carteiras
+        carteira
       </a>
     </li>
     <li>

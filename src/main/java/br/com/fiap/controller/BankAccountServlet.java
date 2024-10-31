@@ -25,6 +25,7 @@ public class BankAccountServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         dao = new BankAccountDao();
+        System.out.println("BankAccountServlet iniciado");
     }
 
     @Override
@@ -52,15 +53,30 @@ public class BankAccountServlet extends HttpServlet {
         request.getRequestDispatcher("/").forward(request, response);
     }
 
+//    @Override
+//    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+//            throws ServletException, IOException {
+//        System.out.println("Chamando o metodo doGet em BankAccountServlet"); // Verifique se o doGet está sendo executado
+//        try {
+//            List<BankAccount> bankAccounts = dao.findAll();
+//            request.setAttribute("bankAccounts", bankAccounts);
+//            System.out.println("Total de contas no servlet: " + bankAccounts.size());
+//        } catch (DBException e) {
+//            e.printStackTrace();
+//        }
+//        request.getRequestDispatcher("/views/pages/wallet/list.jsp").forward(request, response);
+//    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            List<BankAccount> bankAccounts = dao.findAll();
+            List<BankAccount> bankAccounts = dao.findAllWithLogo();
             request.setAttribute("bankAccounts", bankAccounts);
         } catch (DBException e) {
             e.printStackTrace();
         }
-        request.getRequestDispatcher("${pageContext.request.contextPath}/views/pages/wallet/bankAccount/list.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/pages/wallet/list.jsp").forward(request, response);
     }
+
 }

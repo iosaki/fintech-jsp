@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  tomcat:
+    image: tomcat:10-jdk11
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./target/myfintech-1.0-SNAPSHOT:/usr/local/tomcat/webapps/myfintech

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,20 +30,15 @@
                         </a>
                     </h5>
 
-                    <p>Testando JSP - Quantidade de contas: ${fn:length(bankAccounts)}</p>
-                    <c:forEach var="account" items="${bankAccounts}">
-                        <p>Nome da conta: ${account.name}</p>
-                    </c:forEach>
-
                     <c:forEach var="account" items="${bankAccounts}">
                         <div class="card mb-3 border-primary rounded-3">
                             <div class="card-body d-flex justify-content-between align-items-center">
                                 <div class="d-flex align-items-center">
                                     <!-- Exemplo de exibição da logo do banco. Certifique-se de ter o campo no banco de dados e no objeto model -->
-                                    <img src="${account.bank.logoUrl}" alt="${account.name}" width="50" class="me-4"/>
+                                    <img src="${account.logoUrl}" alt="${account.name}" width="50" class="me-4"/>
                                     <div>
                                         <h6 class="mb-0">${account.name}</h6>
-                                        <p class="mb-0">Agência: ${account.bankId} / Conta: ${account.id}</p>
+                                        <p class="mb-0">Agência: ${account.bankName}</p>
                                     </div>
                                 </div>
                                 <div class="text-end">
@@ -51,6 +47,9 @@
                             </div>
                         </div>
                     </c:forEach>
+
+                    <p>Testando JSP - Quantidade de contas: ${fn:length(bankAccounts)}</p>
+
                 </section>
             </div>
         </main>

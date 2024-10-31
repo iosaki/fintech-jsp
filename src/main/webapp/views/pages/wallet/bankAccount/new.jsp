@@ -22,7 +22,7 @@
                 <!-- Seção do formulário -->
                 <section class="mb-4">
                     <h5>
-                        Criar nova conta
+                        Criar nova conte
                     </h5>
                     <c:if test="${not empty mensagem}">
                         <div class="alert alert-success ms-2 me-2 m-auto mt-2">${mensagem}</div>
@@ -48,6 +48,7 @@
                             <label for="banksId" class="form-label">Banks ID</label>
                             <input type="number" class="form-control" id="banksId" name="banksId" required>
                         </div>
+
                         <button type="submit" class="btn btn-primary">Criar Conta</button>
                     </form>
                 </section>

@@ -37,15 +37,16 @@ public class BankAccountDao {
 
     // Metodo para listar todas as contas bancárias
     public List<BankAccount> findAll() throws DBException {
-
-        List<BankAccount> bankAccounts = new ArrayList<BankAccount>();
+        List<BankAccount> bankAccounts = new ArrayList<>();
         String sql = "SELECT * FROM bankaccounts";
+        System.out.println("Iniciando a busca de contas bancárias no banco de dados.");
 
-        try (   Connection connection = ConnectionManager.getConnection();
-                PreparedStatement stm = connection.prepareStatement(sql)) {
-                ResultSet rs = stm.executeQuery();
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement stm = connection.prepareStatement(sql);
+             ResultSet rs = stm.executeQuery()) {
 
-                while (rs.next()) {
+            while (rs.next()) {
+                // Adiciona dados conforme necessário
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
                 int bankId = rs.getInt("bank_id");
@@ -57,51 +58,41 @@ public class BankAccountDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DBException("Erro ao listas contas.");
+            throw new DBException("Erro ao listar contas.");
         }
+        System.out.println("Total de contas encontradas: " + bankAccounts.size());
         return bankAccounts;
     }
 
-    public List<BankAccount> findAllWithBankLogo() throws SQLException {
+    public List<BankAccount> findAllWithLogo() throws DBException {
         List<BankAccount> bankAccounts = new ArrayList<>();
-        String sql = "SELECT ba.id, ba.name, ba.bank_id, ba.user_email, ba.created_at, ba.banks_id, b.logo_url " +
-                "FROM bankaccounts ba " +
-                "JOIN banks b ON ba.bank_id = b.id";
-        try (PreparedStatement stm = connection.prepareStatement(sql)) {
-            ResultSet rs = stm.executeQuery();
+        String sql = "SELECT ba.*, b.logo_url, b.name as bank_name FROM bankaccounts ba JOIN banks b ON ba.banks_id = b.id";
+
+        System.out.println("Executando findAllWithLogo para buscar contas com logo");
+
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement stm = connection.prepareStatement(sql);
+             ResultSet rs = stm.executeQuery()) {
+
             while (rs.next()) {
-                BankAccount bankAccount = new BankAccount(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getInt("bank_id"),
-                        rs.getString("user_email"),
-                        rs.getTimestamp("created_at"),
-                        rs.getInt("banks_id")
-                );
-                bankAccount.setLogoUrl(rs.getString("logo_url"));
-                bankAccounts.add(bankAccount);
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                int bankId = rs.getInt("bank_id");
+                String userEmail = rs.getString("user_email");
+                Timestamp createdAt = rs.getTimestamp("created_at");
+                int banksId = rs.getInt("banks_id");
+                String logoUrl = rs.getString("logo_url");
+                String bankName = rs.getString("bank_name");
+
+                bankAccounts.add(new BankAccount(id, name, bankId, userEmail, createdAt, banksId, logoUrl, bankName));
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DBException("Erro ao listar contas com logos.");
         }
+
+        System.out.println("Total de contas com logos encontradas: " + bankAccounts.size());
         return bankAccounts;
     }
 
-    public void clear() throws SQLException {
-        String sql = "DELETE FROM bankaccounts";
-        try (PreparedStatement stm = connection.prepareStatement(sql)) {
-            stm.executeUpdate();
-            System.out.println("Tabela de contas bancárias esvaziada.");
-        }
-    }
-
-    // Metodo para fechar a conexão
-    public void closeConnection() throws SQLException {
-        try {
-            connection.close();
-            System.out.println("Conexão fechada com sucesso!");
-        } catch (SQLException e) {
-            System.err.println("Erro ao fechar a conexão: " + e.getMessage());
-        }
-    }
 }
