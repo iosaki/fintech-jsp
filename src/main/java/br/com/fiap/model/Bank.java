@@ -1,5 +1,4 @@
 package br.com.fiap.model;
-
 import java.sql.Timestamp;
 
 public class Bank {
@@ -11,12 +10,6 @@ public class Bank {
     // Construtores
     public Bank(int id, String name, Timestamp createdAt, String logoUrl) {
         this.id = id;
-        this.name = name;
-        this.createdAt = createdAt;
-        this.logoUrl = logoUrl;
-    }
-
-    public Bank(String name, Timestamp createdAt, String logoUrl) {
         this.name = name;
         this.createdAt = createdAt;
         this.logoUrl = logoUrl;

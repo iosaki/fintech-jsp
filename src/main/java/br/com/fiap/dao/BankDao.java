@@ -1,5 +1,6 @@
 package br.com.fiap.dao;
 
+import br.com.fiap.exception.DBException;
 import br.com.fiap.factory.ConnectionManager;
 import br.com.fiap.model.Bank;
 
@@ -24,20 +25,26 @@ public class BankDao {
         }
     }
 
-    public List<Bank> findAll() throws SQLException {
+    public List<Bank> findAll() throws DBException {
         List<Bank> banks = new ArrayList<>();
         String sql = "SELECT * FROM banks";
-        try (PreparedStatement stm = connection.prepareStatement(sql)) {
-            ResultSet rs = stm.executeQuery();
+
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement stm = connection.prepareStatement(sql);
+             ResultSet rs = stm.executeQuery()) {
+
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
+                String logoUrl = rs.getString("logo_url");
                 Timestamp createdAt = rs.getTimestamp("created_at");
-                String logoUrl = rs.getString("logoUrl");
-
                 banks.add(new Bank(id, name, createdAt, logoUrl));
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DBException("Erro ao listar bancos.");
         }
+
         return banks;
     }
 

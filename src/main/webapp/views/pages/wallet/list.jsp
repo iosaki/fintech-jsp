@@ -25,7 +25,7 @@
                 <section class="mb-4">
                     <h5>
                         Contas Bancárias
-                        <a href="${pageContext.request.contextPath}/views/pages/wallet/bankAccount/new.jsp" class="btn btn-sm btn-outline-primary ms-2 btn-custom">
+                        <a href="${pageContext.request.contextPath}/bank" class="btn btn-sm btn-outline-primary ms-2 btn-custom">
                             Cadastrar Conta
                         </a>
                     </h5>
@@ -48,7 +48,6 @@
                         </div>
                     </c:forEach>
 
-                    <p>Testando JSP - Quantidade de contas: ${fn:length(bankAccounts)}</p>
 
                 </section>
             </div>

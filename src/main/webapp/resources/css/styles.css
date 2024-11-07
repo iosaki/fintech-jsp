@@ -1,7 +1,6 @@
 html,
 body {
-    height: 100vh;
-    margin: 0;
+    height: 100%;
 }
 
 .sidemenu {
@@ -42,3 +41,38 @@ body {
     background-color: #0044b3 !important;
     color: #fff !important;
 }
+
+/*form*/
+.body-form {
+    height: 100%;
+}
+
+.form-signin {
+    max-width: 330px;
+    padding: 1rem;
+}
+
+.form-signin .form-floating:focus-within {
+    z-index: 2;
+}
+
+.form-signin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.header-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 20px;
+}
+

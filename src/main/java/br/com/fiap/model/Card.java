@@ -4,12 +4,14 @@ public class Card {
     private int id;
     private int bankAccountId;  // camelCase para consistência
     private String name;
+    private String cardIssuer;
 
     // Construtor completo
-    public Card(int id, int bankAccountId, String name) {
+    public Card(int id, int bankAccountId, String name, String cardIssuer) {
         this.id = id;
-        this.bankAccountId = bankAccountId;  // Ajuste de nome para consistência
+        this.bankAccountId = bankAccountId;
         this.name = name;
+        this.cardIssuer = cardIssuer;
     }
 
     // Getters e setters
@@ -35,5 +37,13 @@ public class Card {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCardIssuer() {
+        return cardIssuer;
+    }
+
+    public void setCardIssuer(String cardIssuer) {
+        this.cardIssuer = cardIssuer;
     }
 }

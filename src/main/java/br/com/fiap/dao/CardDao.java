@@ -1,8 +1,5 @@
 package br.com.fiap.dao;
-
-
 import br.com.fiap.model.Card;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,11 +13,12 @@ public class CardDao {
     
     // Método para adicionar um novo cartão
     public void add(Card card) throws SQLException {
-        String sql = "INSERT INTO cards (id, bankAccount_id, name) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO cards (id, bankAccount_id, name, card_issuer) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
             stm.setInt(1, card.getId());
             stm.setInt(2, card.getBankAccountId());
             stm.setString(3, card.getName());
+            stm.setString(4, card.getCardIssuer());
 
             stm.executeUpdate();
             System.out.println("Cartão cadastrado com sucesso!");
@@ -38,7 +36,8 @@ public class CardDao {
                 int id = result.getInt("id");
                 int bankAccountId = result.getInt("bankAccount_id");  // Ajuste de nome para camelCase
                 String name = result.getString("name");
-                cards.add(new Card(id, bankAccountId, name));
+                String cardIssuer = result.getString("card_issuer");
+                cards.add(new Card(id, bankAccountId, name, cardIssuer));
             }
         } catch (SQLException e) {
             System.err.println("Erro ao listar cartões: " + e.getMessage());

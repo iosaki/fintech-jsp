@@ -8,6 +8,11 @@
     <title>Home - JSPs</title>
     <!-- Inclui o header.jsp -->
     <%@ include file="../../../partials/header.jsp" %>
+    <script>
+        function copyBankId() {
+            document.getElementById("banksId").value = document.getElementById("bankId").value;
+        }
+    </script>
 </head>
 <body>
 <div class="container-fluid">
@@ -33,24 +38,26 @@
                     </c:if>
                     <form action="${pageContext.request.contextPath}/bankaccount" method="post">
                         <div class="mb-3">
-                            <label for="name" class="form-label">Nome</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
+                            <label for="bankId" class="form-label">Banco</label>
+                            <select class="form-control" id="bankId" name="bankId" onchange="copyBankId()" required>
+                                <option value="">Selecione um banco</option>
+                                <c:forEach var="bank" items="${banks}">
+                                    <option value="${bank.id}">${bank.name}</option>
+                                </c:forEach>
+                            </select>
                         </div>
                         <div class="mb-3">
-                            <label for="bankId" class="form-label">Bank ID</label>
-                            <input type="number" class="form-control" id="bankId" name="bankId" required>
+                            <label for="name" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
                         </div>
                         <div class="mb-3">
                             <label for="userEmail" class="form-label">Email</label>
                             <input type="email" class="form-control" id="userEmail" name="userEmail" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="banksId" class="form-label">Banks ID</label>
-                            <input type="number" class="form-control" id="banksId" name="banksId" required>
-                        </div>
-
                         <button type="submit" class="btn btn-primary">Criar Conta</button>
                     </form>
+
+
                 </section>
                 
             </div>
