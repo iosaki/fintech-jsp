@@ -1,10 +1,11 @@
 package br.com.fiap.controller;
 
 //import br.com.fiap.bo.EmailBo;
-import br.com.fiap.dao.UserDao;
 //import br.com.fiap.exception.EmailException;
+import br.com.fiap.dao.impl.OracleUserDao;
 import br.com.fiap.factory.DaoFactory;
 import br.com.fiap.model.User;
+
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,16 +15,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.time.LocalDate;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
-    private UserDao dao;
+    private OracleUserDao dao;
 //    private EmailBo bo;
 
     public LoginServlet() {
-        dao = DaoFactory.getUserDao();
+        dao = DaoFactory.getUserValidateDao();
 //        bo = new EmailBo();
     }
 

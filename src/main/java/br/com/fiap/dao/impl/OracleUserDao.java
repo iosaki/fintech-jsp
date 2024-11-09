@@ -1,5 +1,6 @@
 package br.com.fiap.dao.impl;
 
+import br.com.fiap.dao.UserValidateDao;
 import br.com.fiap.factory.ConnectionManager;
 import br.com.fiap.dao.UserDao;
 import br.com.fiap.model.User;
@@ -9,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class OracleUserDao implements UserDao {
+public class OracleUserDao implements UserValidateDao {
 
     private Connection connection;
 

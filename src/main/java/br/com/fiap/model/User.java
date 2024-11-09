@@ -6,15 +6,18 @@ import java.sql.Timestamp;
 public class User {
 
     private String email;
+    private String documentNumber;
     private String name;
     private String surname;
     private String phoneNumber;
-    private int documentNumber;
     private String password;
     private Timestamp createdAt;
+    private String profilePictureUrl;
 
-    public User(String email, String name, String surname, String phoneNumber, int documentNumber, String password, Timestamp createdAt) {
-        super();
+    public User() {
+    }
+
+    public User(String email, String documentNumber, String name, String surname, String phoneNumber, Timestamp createdAt, String password, String profilePictureUrl) {
         this.email = email;
         this.name = name;
         this.surname = surname;
@@ -22,11 +25,9 @@ public class User {
         this.documentNumber = documentNumber;
         setPassword(password);
         this.createdAt = createdAt;
+        this.profilePictureUrl = profilePictureUrl;
     }
 
-    public User() {
-        super();
-    }
 
     public User(String email, String password) {
         super();
@@ -34,8 +35,40 @@ public class User {
         setPassword(password);
     }
 
-
     // Getters e Setters
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDocumentNumber() {
+        return documentNumber;
+    }
+
+    public void setDocumentNumber(String documentNumber) {
+        this.documentNumber = documentNumber;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -43,22 +76,6 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public String getName() {return name;}
-
-    public void setName(String name) {this.name = name;}
-
-    public String getSurname() {return surname;}
-
-    public void setSurname(String surname) {this.surname = surname;}
-
-    public String getPhoneNumber() {return phoneNumber;}
-
-    public void setPhoneNumber(String phoneNumber) {this.phoneNumber = phoneNumber;}
-
-    public int getDocumentNumber() {return documentNumber;}
-
-    public void setDocumentNumber(int documentNumber) {this.documentNumber = documentNumber;}
 
     public String getPassword() {return password;}
 
@@ -68,6 +85,14 @@ public class User {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
     }
 
     public Timestamp getCreatedAt() {
