@@ -24,7 +24,8 @@
       </a>
     </li>
     <li>
-      <a href="/transacoes" class="nav-link <%= currentPath.equals("/transacoes") ? "active" : "link-dark" %>">
+      <a href="${pageContext.request.contextPath}/transaction?action=listTransactions"
+         class="nav-link <%= currentPath.endsWith("/transaction") ? "active" : "link-dark" %>">
         <i class="bi bi-plus-circle-fill p-1"></i>
         transações
       </a>

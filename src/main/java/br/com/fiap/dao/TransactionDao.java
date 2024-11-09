@@ -1,5 +1,7 @@
 package br.com.fiap.dao;
 
+import br.com.fiap.exception.DBException;
+import br.com.fiap.factory.ConnectionManager;
 import br.com.fiap.model.Transaction;
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,9 +13,13 @@ public class TransactionDao {
 
 
     // Metodo para adicionar uma nova transação
-    public void add(Transaction transaction) throws SQLException {
-        String sql = "INSERT INTO transactions (id, bankAccount_id, value, type, transaction_date, created_at) VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+    public void add(Transaction transaction) throws SQLException, DBException {
+        String sql = "INSERT INTO transaction (id, bankAccount_id, value, type, transaction_date, created_at) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement stm = connection.prepareStatement(sql);
+             ResultSet rs = stm.executeQuery()) {
+
             stm.setInt(1, transaction.getId());  // Definindo o ID manualmente
             stm.setInt(2, transaction.getBankAccountId());
             stm.setInt(3, transaction.getValue());
@@ -23,15 +29,21 @@ public class TransactionDao {
 
             stm.executeUpdate();
             System.out.println("Transação cadastrada com sucesso!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DBException("Erro ao cadastrar transação.");
         }
     }
 
     // Método para listar todas as transações
-    public List<Transaction> findAll() throws SQLException {
-        List<Transaction> transactions = new ArrayList<>();
-        try {
-            PreparedStatement stm = connection.prepareStatement("SELECT * FROM transactions");
-            ResultSet result = stm.executeQuery();
+    public List<Transaction> findAll() throws SQLException, DBException {
+        List<Transaction> transaction = new ArrayList<>();
+        String sql = "SELECT * FROM transaction";
+        System.out.println("Iniciando a busca de transações no banco de dados.");
+
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement stm = connection.prepareStatement(sql);
+             ResultSet result = stm.executeQuery()) {
 
             while (result.next()) {
                 int id = result.getInt("id");
@@ -45,16 +57,17 @@ public class TransactionDao {
                 // Pegando o Timestamp do banco
                 Timestamp createdAt = result.getTimestamp("created_at");
 
-                transactions.add(new Transaction(id, bankAccountId, value, type, transactionDate, createdAt));
+                transaction.add(new Transaction(id, bankAccountId, value, type, transactionDate, createdAt));
             }
         } catch (SQLException e) {
-            System.err.println("Erro ao listar transações: " + e.getMessage());
+            e.printStackTrace();
+            throw new DBException("Erro ao listar transações.");
         }
-        return transactions;
+        return transaction;
     }
 
     public void clear() throws SQLException {
-        String sql = "DELETE FROM transactions";
+        String sql = "DELETE FROM transaction";
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
             stm.executeUpdate();
             System.out.println("Tabela de transações esvaziada.");
