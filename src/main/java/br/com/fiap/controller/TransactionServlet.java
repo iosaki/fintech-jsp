@@ -63,41 +63,41 @@ public class TransactionServlet extends HttpServlet {
     }
 
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String action = request.getParameter("action");
-
-        if ("listTransactions".equals(action)) {
-            // Código para transactions_list.jsp
-            try {
-                List<Transaction> transactions = dao.findAll();
-//                double accountBalance = dao.getAccountBalance(); // Método fictício para obter o saldo
-                request.setAttribute("transactions", transactions);
-//                request.setAttribute("accountBalance", accountBalance);
-            } catch (DBException e) {
-                e.printStackTrace();
-                request.setAttribute("erro", "Erro ao listar transações.");
-            } catch (SQLException e) {
-                e.printStackTrace();
-                request.setAttribute("erro", "Erro inesperado.");
-            }
-
-            request.getRequestDispatcher("/views/pages/transactions/transactions_list.jsp").forward(request, response);
-
-        } else if ("newTransaction".equals(action)) {
-            // Código para transaction_new.jsp
-            try {
-                BankAccountDao bankAccountDao = new BankAccountDao();
-                List<BankAccount> bankAccounts = bankAccountDao.findAll();
-                request.setAttribute("bankAccounts", bankAccounts);
-            } catch (DBException e) {
-                e.printStackTrace();
-                request.setAttribute("erro", "Erro ao carregar contas bancárias.");
-            }
-
-            request.getRequestDispatcher("/views/pages/transactions/transaction/transaction_new.jsp").forward(request, response);
-        }
-    }
+//    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+//            throws ServletException, IOException {
+//        String action = request.getParameter("action");
+//
+//        if ("listTransactions".equals(action)) {
+//            // Código para transactions_list.jsp
+//            try {
+//                List<Transaction> transactions = dao.findAll();
+////                double accountBalance = dao.getAccountBalance(); // Método fictício para obter o saldo
+//                request.setAttribute("transactions", transactions);
+////                request.setAttribute("accountBalance", accountBalance);
+//            } catch (DBException e) {
+//                e.printStackTrace();
+//                request.setAttribute("erro", "Erro ao listar transações.");
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//                request.setAttribute("erro", "Erro inesperado.");
+//            }
+//
+//            request.getRequestDispatcher("/views/pages/transactions/transactions_list.jsp").forward(request, response);
+//
+//        } else if ("newTransaction".equals(action)) {
+//            // Código para transaction_new.jsp
+//            try {
+//                BankAccountDao bankAccountDao = new BankAccountDao();
+//                List<BankAccount> bankAccounts = bankAccountDao.findAll();
+//                request.setAttribute("bankAccounts", bankAccounts);
+//            } catch (DBException e) {
+//                e.printStackTrace();
+//                request.setAttribute("erro", "Erro ao carregar contas bancárias.");
+//            }
+//
+//            request.getRequestDispatcher("/views/pages/transactions/transaction/transaction_new.jsp").forward(request, response);
+//        }
+//    }
 
 
 }
