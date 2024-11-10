@@ -10,7 +10,7 @@ import java.util.List;
 public class TransactionDao {
     private Connection connection;
 
-    // Método para adicionar uma nova transação
+    // Metodo para adicionar uma nova transação
     public void add(Transaction transaction) throws SQLException, DBException {
         String sql = "INSERT INTO transactions (id, bankAccount_id, value, type, transaction_date, created_at, balance) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -33,7 +33,7 @@ public class TransactionDao {
         }
     }
 
-    // Método para listar todas as transações
+    // Metodo para listar todas as transações
     public List<Transaction> findAll() throws SQLException, DBException {
         List<Transaction> transactions = new ArrayList<>();
         String sql = "SELECT * FROM transactions";
@@ -70,7 +70,7 @@ public class TransactionDao {
         }
     }
 
-    // Método para fechar a conexão
+    // Metodo para fechar a conexão
     public void closeConnection() throws SQLException {
         try {
             if (connection != null && !connection.isClosed()) {
@@ -80,5 +80,42 @@ public class TransactionDao {
         } catch (SQLException e) {
             System.err.println("Erro ao fechar a conexão: " + e.getMessage());
         }
+    }
+
+    public List<Transaction> findAllByUserEmail(String userEmail) throws DBException {
+        List<Transaction> transactions = new ArrayList<>();
+        String sql = "SELECT t.* FROM transactions t " +
+                "JOIN bankaccounts b ON t.bankaccount_id = b.id " +
+                "WHERE b.user_email = ?";
+
+        System.out.println("Iniciando a busca de transações para o usuário: " + userEmail);
+
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement stm = connection.prepareStatement(sql)) {
+
+            // Define o parâmetro para o user_email
+            stm.setString(1, userEmail);
+
+            try (ResultSet result = stm.executeQuery()) {
+                while (result.next()) {
+                    int id = result.getInt("id");
+                    int bankAccountId = result.getInt("bankAccount_id");
+                    int value = result.getInt("value");
+                    String type = result.getString("type");
+                    Timestamp transactionDate = result.getTimestamp("transaction_date");
+                    Timestamp createdAt = result.getTimestamp("created_at");
+                    int balance = result.getInt("balance");
+
+                    // Adicione a instância de Transaction à lista
+                    transactions.add(new Transaction(id, bankAccountId, value, type, transactionDate, createdAt, balance));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DBException("Erro ao listar transações do usuário.", e);
+        }
+
+        System.out.println("Total de transações encontradas: " + transactions.size());
+        return transactions;
     }
 }
