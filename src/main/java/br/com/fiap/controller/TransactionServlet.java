@@ -72,20 +72,27 @@ public class TransactionServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
+        System.out.println("action: " + action);
 
-        if ("listTransactions".equals(action)) {
-            try {
+        try {
+            if ("listTransactions".equals(action)) {
+                System.out.println("Fetching all transactions...");
                 List<Transaction> transactions = transactionDao.findAll();
                 request.setAttribute("transactions", transactions);
-            } catch (DBException | SQLException e) {
-                e.printStackTrace();
-                request.setAttribute("erro", "Erro ao listar transações.");
+                request.getRequestDispatcher("/views/pages/transactions/transactions_list.jsp").forward(request, response);
+
+            } else if ("newTransaction".equals(action)) {
+                request.getRequestDispatcher("/views/pages/transactions/transaction/transaction_new.jsp").forward(request, response);
+            } else {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Ação desconhecida: " + action);
             }
-
-            request.getRequestDispatcher("/views/pages/transactions/transactions_list.jsp").forward(request, response);
-
-        } else if ("newTransaction".equals(action)) {
-            request.getRequestDispatcher("/views/pages/transactions/transaction/transaction_new.jsp").forward(request, response);
+        } catch (DBException | SQLException e) {
+            e.printStackTrace();
+            request.setAttribute("erro", "Erro ao listar transações: " + e.getMessage());
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao processar a solicitação: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro inesperado: " + e.getMessage());
         }
     }
 
