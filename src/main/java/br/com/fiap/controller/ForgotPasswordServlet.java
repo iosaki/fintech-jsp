@@ -13,7 +13,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import java.util.UUID;@WebServlet("/forgotPassword")
+import java.util.UUID;
+
+@WebServlet("/forgotPassword")
 public class ForgotPasswordServlet extends HttpServlet {
 
     private Connection connection;
