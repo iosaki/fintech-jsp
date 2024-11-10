@@ -91,7 +91,7 @@ public class BankAccountDao {
                     String bankName = rs.getString("bank_name");
 
                     // Adicione a instância de BankAccount à lista
-                    bankAccounts.add(new BankAccount(id, name, bankId, userEmail, createdAt, logoUrl, bankName));
+                    bankAccounts.add(new BankAccount(id, name, bankId, userEmail, createdAt, logoUrl, bankName,0.0));
                 }
             }
         } catch (SQLException e) {

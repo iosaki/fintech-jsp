@@ -2,6 +2,7 @@ package br.com.fiap.controller;
 
 import br.com.fiap.dao.BankAccountDao;
 import br.com.fiap.dao.BankDao;
+import br.com.fiap.dao.TransactionDao;
 import br.com.fiap.exception.DBException;
 import br.com.fiap.model.Bank;
 import br.com.fiap.model.BankAccount;
@@ -24,12 +25,14 @@ public class BankAccountServlet extends HttpServlet {
 
     private BankAccountDao dao;
     private BankDao bankDao;
+    private TransactionDao transactionDao;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         dao = new BankAccountDao();
         bankDao = new BankDao();
+        transactionDao = new TransactionDao();
     }
 
     @Override
@@ -80,7 +83,6 @@ public class BankAccountServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
-        System.out.println("idParam" + idParam);
 
         if (idParam != null && !idParam.isEmpty()) {
             try {
@@ -88,9 +90,11 @@ public class BankAccountServlet extends HttpServlet {
                 BankAccount bankAccount = dao.findById(id);
 
                 if (bankAccount != null) {
-                    request.setAttribute("bankAccount", bankAccount);
+                    // Obter o saldo das transações vinculadas à conta
+                    double saldo = transactionDao.getSumOfTransactionsByBankAccountId(id);
+                    request.setAttribute("saldo", saldo);
 
-                    // Carrega a lista de bancos e passa para a página JSP
+                    request.setAttribute("bankAccount", bankAccount);
                     List<Bank> banks = bankDao.findAll();
                     request.setAttribute("banks", banks);
 
@@ -98,7 +102,7 @@ public class BankAccountServlet extends HttpServlet {
                 } else {
                     response.sendRedirect("/notFound.jsp");
                 }
-            } catch (DBException | NumberFormatException e) {
+            } catch (DBException | NumberFormatException | SQLException e) {
                 e.printStackTrace();
                 response.sendRedirect("/errorPage.jsp");
             }
@@ -109,17 +113,22 @@ public class BankAccountServlet extends HttpServlet {
 
                 if (userEmail != null && !userEmail.isEmpty()) {
                     List<BankAccount> bankAccounts = dao.findAllWithLogo(userEmail);
+                    // Adicione o saldo de cada conta aqui, se necessário
+                    for (BankAccount account : bankAccounts) {
+                        double saldo = transactionDao.getSumOfTransactionsByBankAccountId(account.getId());
+                        System.out.println("Saldo para a conta " + account.getId() + ": " + saldo);
+                        account.setSaldo(saldo); // Adicione um atributo `saldo` na model, se necessário
+                    }
                     request.setAttribute("bankAccounts", bankAccounts);
                 } else {
                     response.sendRedirect("/login");
                     return;
                 }
-            } catch (DBException e) {
+            } catch (DBException | SQLException e) {
                 e.printStackTrace();
                 request.setAttribute("error", "Erro ao buscar contas bancárias.");
             }
             request.getRequestDispatcher("/views/pages/wallet/list.jsp").forward(request, response);
         }
     }
-
 }

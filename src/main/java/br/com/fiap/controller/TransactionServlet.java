@@ -96,13 +96,13 @@ public class TransactionServlet extends HttpServlet {
         }
     }
 
-    // Método auxiliar para obter o saldo atual da conta bancária
+    // Metodo auxiliar para obter o saldo atual da conta bancária
     private int getAccountBalance(int bankAccountId) throws SQLException, DBException {
         List<Transaction> transactions = transactionDao.findAll();
         int balance = 0;
         for (Transaction transaction : transactions) {
             if (transaction.getBankAccountId() == bankAccountId) {
-                balance = transaction.getBalance(); // Obtém o saldo da última transação
+                balance = transaction.getBalance();
             }
         }
         return balance;

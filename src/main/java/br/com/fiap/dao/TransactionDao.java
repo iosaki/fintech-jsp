@@ -118,4 +118,22 @@ public class TransactionDao {
         System.out.println("Total de transações encontradas: " + transactions.size());
         return transactions;
     }
+
+    public double getSumOfTransactionsByBankAccountId(int bankAccountId) throws SQLException {
+        double sum = 0;
+        String sql = "SELECT SUM(value) FROM transactions WHERE bankaccount_id = ?";
+
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, bankAccountId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    sum = rs.getDouble(1);
+                }
+            }
+        }
+        return sum;
+    }
+
 }

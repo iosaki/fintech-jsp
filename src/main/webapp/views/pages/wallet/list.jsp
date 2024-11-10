@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="jakarta.tags.core" prefix="c" %>
-<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%
     String user = (String) session.getAttribute("user");
 %>
@@ -47,7 +47,7 @@
                                 </div>
                                 <div class="text-end">
                                     <p class="text-muted mb-0">
-                                        Saldo: R$ X
+                                        Saldo: R$ <c:out value="${account.saldo}" />
                                         <a href="${pageContext.request.contextPath}/bankaccount?id=${account.id}" class="ms-2" title="Editar saldo">
                                             <i class="fas fa-edit"></i> <!-- Ícone de edição -->
                                         </a>

@@ -10,9 +10,10 @@ public class BankAccount {
     private Timestamp createdAt;
     private String logoUrl;
     private String bankName;
+    private double saldo; // Novo campo
 
     // Atualizar construtores e getters/setters
-    public BankAccount(int id, String name, int bankId, String userEmail, Timestamp createdAt, String logoUrl, String bankName) {
+    public BankAccount(int id, String name, int bankId, String userEmail, Timestamp createdAt, String logoUrl, String bankName, Double saldo) {
         this.id = id;
         this.name = name;
         this.bankId = bankId;
@@ -20,11 +21,13 @@ public class BankAccount {
         this.createdAt = createdAt;
         this.logoUrl = logoUrl;
         this.bankName = bankName;
+        this.saldo = 0.0;
+
     }
 
     // Construtor sem logoUrl (caso não precise dela)
     public BankAccount(int id, String name, int bankId, String userEmail, Timestamp createdAt) {
-        this(id, name, bankId, userEmail, createdAt, null, null);
+        this(id, name, bankId, userEmail, createdAt, null, null, null);
     }
 
 
@@ -83,5 +86,13 @@ public class BankAccount {
 
     public void setBankName(String bankName) {
         this.bankName = bankName;
+    }
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
     }
 }
