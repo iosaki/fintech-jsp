@@ -10,7 +10,7 @@
 <div class="container text-center mt-5">
   <h1 class="display-4">Erro 504</h1>
   <p>O servidor não conseguiu obter uma resposta de um servidor upstream a tempo. Por favor, tente novamente mais tarde.</p>
-  <a href="/login" class="btn btn-primary">Voltar para a página inicial</a>
+  <a href="${pageContext.request.contextPath}/" class="btn btn-primary">Voltar para a página inicial</a>
 </div>
 </body>
 </html>

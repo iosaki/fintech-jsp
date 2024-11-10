@@ -56,7 +56,7 @@ public class CreateAccountServlet extends HttpServlet {
 
             userDao.add(user);
 
-            response.sendRedirect("login.jsp");
+            response.sendRedirect(request.getContextPath() + "/login");
         } catch (SQLException e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao criar a conta.");
         }

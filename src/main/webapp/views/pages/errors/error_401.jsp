@@ -10,7 +10,7 @@
 <div class="container text-center mt-5">
   <h1 class="display-4">Erro 401</h1>
   <p>Você não tem permissão para acessar esta página. Faça login para continuar.</p>
-  <a href="/login" class="btn btn-primary">Fazer Login</a>
+  <a href="${pageContext.request.contextPath}/login" class="btn btn-primary">Fazer Login</a>
 </div>
 </body>
 </html>

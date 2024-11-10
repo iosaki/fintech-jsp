@@ -43,7 +43,7 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("user", email);
 //            String mensagem =
 //                    "Um login foi realizado na plataforma em " + LocalDate.now();
-            request.getRequestDispatcher("/").forward(request, response);
+            request.getRequestDispatcher("/views/pages/index.jsp").forward(request, response);
 //            try {
 //                bo.enviarEmail(email, "Login Realizado", mensagem);
 //            } catch (EmailException e) {

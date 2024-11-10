@@ -38,9 +38,6 @@
       <strong>${user}</strong>
     </a>
     <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-      <li><a class="dropdown-item" href="#">Configurações</a></li>
-      <li><a class="dropdown-item" href="#">Perfil</a></li>
-      <li><hr class="dropdown-divider" /></li>
       <li><a class="dropdown-item" href="${pageContext.request.contextPath}/login">Sair</a></li>
     </ul>
   </div>

@@ -10,7 +10,7 @@
 <div class="container text-center mt-5">
   <h1 class="display-4">Erro 405</h1>
   <p>O método HTTP utilizado não é permitido para esta URL.</p>
-  <a href="/login" class="btn btn-primary">Voltar para a página inicial</a>
+  <a href="${pageContext.request.contextPath}/" class="btn btn-primary">Voltar para a página inicial</a>
 </div>
 </body>
 </html>
