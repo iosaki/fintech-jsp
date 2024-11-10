@@ -44,20 +44,20 @@ public class TransactionDao {
              ResultSet result = stm.executeQuery()) {
 
             while (result.next()) {
+                System.out.println("Transação encontrada: ID " + result.getInt("id")); // Log adicional para debug
                 int id = result.getInt("id");
                 int bankAccountId = result.getInt("bankAccount_id");
                 int value = result.getInt("value");
                 String type = result.getString("type");
                 Timestamp transactionDate = result.getTimestamp("transaction_date");
                 Timestamp createdAt = result.getTimestamp("created_at");
-                int balance = result.getInt("balance");  // Recuperando o saldo
+                int balance = result.getInt("balance");
 
-                // Adicionando a transação com o saldo
                 transactions.add(new Transaction(id, bankAccountId, value, type, transactionDate, createdAt, balance));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DBException("Erro ao listar transações.");
+            System.err.println("Erro no método findAll: " + e.getMessage());
+            throw new DBException("Erro ao listar transações.", e);
         }
         return transactions;
     }

@@ -17,7 +17,7 @@
       </a>
     </li>
     <li>
-      <a href="${pageContext.request.contextPath}/views/pages/wallet/list.jsp"
+      <a href="${pageContext.request.contextPath}/bankaccount"
          class="nav-link <%= currentPath.endsWith("/bankaccount") ? "active" : "link-dark" %>">
         <i class="bi bi-wallet-fill p-1"></i>
         carteira
