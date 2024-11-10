@@ -10,7 +10,7 @@
 <div class="container text-center mt-5">
   <h1 class="display-4">Erro 408</h1>
   <p>A requisição demorou demais para ser concluída. Por favor, tente novamente.</p>
-  <a href="/" class="btn btn-primary">Voltar para a página inicial</a>
+  <a href="/login" class="btn btn-primary">Voltar para a página inicial</a>
 </div>
 </body>
 </html>

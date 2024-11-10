@@ -31,7 +31,7 @@
               <select class="form-control" id="bankAccounts" name="bankAccountId" required>
                 <option value="">Selecione uma conta</option>
                 <c:forEach var="account" items="${bankAccounts}">
-                  <option value="${account.id}">${account.name}</option>
+                  <option value="${account.id}">${account.name} - Saldo Atual: ${account.balance}</option>
                 </c:forEach>
               </select>
             </div>

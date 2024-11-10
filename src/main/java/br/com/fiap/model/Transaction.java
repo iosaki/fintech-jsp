@@ -9,15 +9,17 @@ public class Transaction {
     private String type;
     private Timestamp transactionDate;
     private Timestamp createdAt;
+    private int balance; // Novo atributo para armazenar o saldo
 
     // Construtor completo
-    public Transaction(int id, int bankAccountId, int value, String type, Timestamp transactionDate, Timestamp createdAt) {
+    public Transaction(int id, int bankAccountId, int value, String type, Timestamp transactionDate, Timestamp createdAt, int balance) {
         this.id = id;
         this.bankAccountId = bankAccountId;
         this.value = value;
         this.type = type;
         this.transactionDate = transactionDate;
         this.createdAt = createdAt;
+        this.balance = balance; // Inicializando o saldo
     }
 
     // Getters e setters
@@ -67,5 +69,22 @@ public class Transaction {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
+
+    // Método para atualizar o saldo com base na transação
+    public void updateBalance(int previousBalance) {
+        if (this.type.equalsIgnoreCase("deposit")) {
+            this.balance = previousBalance + this.value;  // Adiciona o valor em depósitos
+        } else if (this.type.equalsIgnoreCase("withdrawal")) {
+            this.balance = previousBalance - this.value;  // Subtrai o valor em retiradas
+        }
     }
 }
