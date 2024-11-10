@@ -47,12 +47,11 @@ public class TransactionServlet extends HttpServlet {
                 transactionDate = Timestamp.valueOf(transactionDateParam);
             }
 
-            // Calcula o saldo anterior da conta
-            int previousBalance = getAccountBalance(bankAccountId);
-            int newBalance = type.equalsIgnoreCase("deposit") ? previousBalance + value : previousBalance - value;
+            // Calcula o saldo da transação com base no tipo
+            int transactionBalance = type.equalsIgnoreCase("deposit") ? value : -value;
 
-            // Cria uma nova transação com o saldo atualizado
-            Transaction transaction = new Transaction(0, bankAccountId, value, type, transactionDate, createdAt, newBalance);
+            // Cria uma nova transação com o saldo calculado
+            Transaction transaction = new Transaction(0, bankAccountId, value, type, transactionDate, createdAt, transactionBalance);
 
             transactionDao.add(transaction);
             request.setAttribute("mensagem", "Transação cadastrada com sucesso!");
@@ -74,9 +73,14 @@ public class TransactionServlet extends HttpServlet {
 
         if ("listTransactions".equals(action)) {
             try {
-                List<Transaction> transactions = transactionDao.findAll();
+                // Obtém o email do usuário logado da sessão
+                String user = (String) request.getSession().getAttribute("user");
+                System.out.println("Iniciando o doGet com usuario" + user);
+
+                // Filtra as transações com base no email do usuário
+                List<Transaction> transactions = transactionDao.findAllByUserEmail(user);
                 request.setAttribute("transactions", transactions);
-            } catch (DBException | SQLException e) {
+            } catch (DBException e) {
                 e.printStackTrace();
                 request.setAttribute("erro", "Erro ao listar transações.");
             }
@@ -86,17 +90,5 @@ public class TransactionServlet extends HttpServlet {
         } else if ("newTransaction".equals(action)) {
             request.getRequestDispatcher("/views/pages/transactions/transaction/transaction_new.jsp").forward(request, response);
         }
-    }
-
-    // Método auxiliar para obter o saldo atual da conta bancária
-    private int getAccountBalance(int bankAccountId) throws SQLException, DBException {
-        List<Transaction> transactions = transactionDao.findAll();
-        int balance = 0;
-        for (Transaction transaction : transactions) {
-            if (transaction.getBankAccountId() == bankAccountId) {
-                balance = transaction.getBalance(); // Obtém o saldo da última transação
-            }
-        }
-        return balance;
     }
 }
