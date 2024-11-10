@@ -25,33 +25,33 @@
             <div class="alert alert-danger ms-2 me-2 m-auto mt-2">${erro}</div>
           </c:if>
 
-          <form action="${pageContext.request.contextPath}/transaction" method="post">
+          <form action="${pageContext.request.contextPath}/transaction?action=newTransaction" method="post">
             <div class="mb-3">
-              <label for="bankAccounts" class="form-label">ID da Conta Bancária</label>
+              <label for="bankAccounts" class="form-label">Selecione uma conta</label>
               <select class="form-control" id="bankAccounts" name="bankAccountId" required>
                 <option value="">Selecione uma conta</option>
                 <c:forEach var="account" items="${bankAccounts}">
-                  <option value="${account.id}">${account.name} - Saldo Atual: ${account.balance}</option>
+                  <option value="${account.id}">${account.name} - Saldo Atual: ${transactions.balance}</option>
                 </c:forEach>
               </select>
             </div>
 
             <div class="mb-3">
-              <label for="value" class="form-label">Valor</label>
+              <label for="value" class="form-label">Valor R$</label>
               <input type="number" class="form-control" id="value" name="value" required>
             </div>
 
             <div class="mb-3">
               <label for="type" class="form-label">Tipo</label>
               <select class="form-control" id="type" name="type" required>
-                <option value="credit">Crédito</option>
-                <option value="debit">Débito</option>
+                <option value="saque">Saque</option>
+                <option value="Depósito">Depósito</option>
               </select>
             </div>
 
             <div class="mb-3">
-              <label for="transaction_date" class="form-label">Data e Hora da Transação (yyyy-MM-dd HH:mm:ss)</label>
-              <input type="text" class="form-control" id="transaction_date" name="transaction_date" placeholder="yyyy-MM-dd HH:mm:ss">
+              <label for="transaction_date" class="form-label">Data e Hora da Transação (opcional)</label>
+              <input type="datetime-local" class="form-control" id="transaction_date" name="transaction_date">
             </div>
 
             <button type="submit" class="btn btn-primary">Cadastrar Transação</button>

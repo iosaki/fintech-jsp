@@ -55,10 +55,12 @@ public class BankAccountServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            List<BankAccount> bankAccounts = dao.findAllWithLogo();
+            String user = (String) request.getSession().getAttribute("user");
+            List<BankAccount> bankAccounts = dao.findAllByUserEmailWithLogo(user);
             request.setAttribute("bankAccounts", bankAccounts);
         } catch (DBException e) {
             e.printStackTrace();
+            request.setAttribute("erro", "Erro ao listar contas bancárias.");
         }
         request.getRequestDispatcher("/views/pages/wallet/list.jsp").forward(request, response);
     }

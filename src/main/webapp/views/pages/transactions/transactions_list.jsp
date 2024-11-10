@@ -40,6 +40,7 @@
                             <th>Data da Transação</th>
                             <th>Saldo</th>
                             <th>Data de Criação</th>
+                            <th>Ações</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -52,6 +53,12 @@
                                 <td>${transaction.transactionDate}</td>
                                 <td>${transaction.balance}</td>
                                 <td>${transaction.createdAt}</td>
+                                <td>
+                                    <!-- Botão de Editar -->
+                                    <a href="${pageContext.request.contextPath}/transaction?action=showUpdateForm&id=${transaction.id}" class="btn btn-warning btn-sm">Editar</a>
+                                    <!-- Botão de Deletar -->
+                                    <a href="${pageContext.request.contextPath}/transaction?action=deleteTransaction&id=${transaction.id}" class="btn btn-danger btn-sm">Deletar</a>
+                                </td>
                             </tr>
                         </c:forEach>
                         </tbody>

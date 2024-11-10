@@ -88,4 +88,65 @@ public class BankAccountDao {
 
         return bankAccounts;
     }
+
+    public List<BankAccount> findAllByUserEmail(String userEmail) throws DBException {
+        List<BankAccount> bankAccounts = new ArrayList<>();
+        String sql = "SELECT * FROM bankaccounts WHERE user_email = ?";
+
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement stm = connection.prepareStatement(sql)) {
+
+            stm.setString(1, userEmail);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String name = rs.getString("name");
+                    int bankId = rs.getInt("bank_id");
+                    Timestamp createdAt = rs.getTimestamp("created_at");
+
+                    bankAccounts.add(new BankAccount(id, name, bankId, userEmail, createdAt));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DBException("Erro ao listar contas por email do usuário.");
+        }
+
+        return bankAccounts;
+    }
+
+    public List<BankAccount> findAllByUserEmailWithLogo(String userEmail) throws DBException {
+        List<BankAccount> bankAccounts = new ArrayList<>();
+        String sql = "SELECT ba.*, b.logo_url, b.name as bank_name " +
+                "FROM bankaccounts ba " +
+                "JOIN banks b ON ba.bank_id = b.id " +
+                "WHERE ba.user_email = ?";
+
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement stm = connection.prepareStatement(sql)) {
+
+            stm.setString(1, userEmail);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String name = rs.getString("name");
+                    int bankId = rs.getInt("bank_id");
+                    Timestamp createdAt = rs.getTimestamp("created_at");
+                    String logoUrl = rs.getString("logo_url");
+                    String bankName = rs.getString("bank_name");
+
+                    bankAccounts.add(new BankAccount(id, name, bankId, userEmail, createdAt, logoUrl, bankName));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DBException("Erro ao listar contas por email do usuário com logos.");
+        }
+
+        return bankAccounts;
+    }
+
+
 }

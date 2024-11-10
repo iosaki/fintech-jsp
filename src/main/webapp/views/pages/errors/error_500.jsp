@@ -10,7 +10,7 @@
 <div class="container text-center mt-5">
   <h1 class="display-4">Erro 500</h1>
   <p>Ocorreu um erro no servidor. Por favor, tente novamente mais tarde.</p>
-  <a href="/myfintech_war_exploded/" class="btn btn-primary">Voltar para a página inicial</a>
+  <a href="/views/pages/index.jsp" class="btn btn-primary">Voltar para a página inicial</a>
 </div>
 </body>
 </html>
