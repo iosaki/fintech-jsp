@@ -33,68 +33,19 @@ public class TransactionDao {
         }
     }
 
-    // Metodo para listar todas as transações
-    public List<Transaction> findAll() throws SQLException, DBException {
-        List<Transaction> transactions = new ArrayList<>();
-        String sql = "SELECT * FROM transactions";
-        System.out.println("Iniciando a busca de transações no banco de dados.");
-
-        try (Connection connection = ConnectionManager.getConnection();
-             PreparedStatement stm = connection.prepareStatement(sql);
-             ResultSet result = stm.executeQuery()) {
-
-            while (result.next()) {
-                int id = result.getInt("id");
-                int bankAccountId = result.getInt("bankAccount_id");
-                int value = result.getInt("value");
-                String type = result.getString("type");
-                Timestamp transactionDate = result.getTimestamp("transaction_date");
-                Timestamp createdAt = result.getTimestamp("created_at");
-                int balance = result.getInt("balance");  // Recuperando o saldo
-
-                // Adicionando a transação com o saldo
-                transactions.add(new Transaction(id, bankAccountId, value, type, transactionDate, createdAt, balance));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DBException("Erro ao listar transações.");
-        }
-        return transactions;
-    }
-
-    public void clear() throws SQLException {
-        String sql = "DELETE FROM transactions";
-        try (PreparedStatement stm = connection.prepareStatement(sql)) {
-            stm.executeUpdate();
-            System.out.println("Tabela de transações esvaziada.");
-        }
-    }
-
-    // Metodo para fechar a conexão
-    public void closeConnection() throws SQLException {
-        try {
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-                System.out.println("Conexão fechada com sucesso!");
-            }
-        } catch (SQLException e) {
-            System.err.println("Erro ao fechar a conexão: " + e.getMessage());
-        }
-    }
-
-    public List<Transaction> findAllByUserEmail(String userEmail) throws DBException {
+    public List<Transaction> findAllByUserEmail(String email) throws DBException {
         List<Transaction> transactions = new ArrayList<>();
         String sql = "SELECT t.* FROM transactions t " +
-                "JOIN bankaccounts b ON t.bankaccount_id = b.id " +
+                "JOIN bankaccounts b ON t.bankAccount_id = b.id " +
                 "WHERE b.user_email = ?";
 
-        System.out.println("Iniciando a busca de transações para o usuário: " + userEmail);
+        System.out.println("Iniciando a busca de transações para o usuário: " + email);
 
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement stm = connection.prepareStatement(sql)) {
 
             // Define o parâmetro para o user_email
-            stm.setString(1, userEmail);
+            stm.setString(1, email);
 
             try (ResultSet result = stm.executeQuery()) {
                 while (result.next()) {
@@ -119,6 +70,54 @@ public class TransactionDao {
         return transactions;
     }
 
+    // Método para listar todas as transações (sem filtro)
+    public List<Transaction> findAll() throws SQLException, DBException {
+        List<Transaction> transactions = new ArrayList<>();
+        String sql = "SELECT * FROM transactions";
+
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement stm = connection.prepareStatement(sql);
+             ResultSet result = stm.executeQuery()) {
+
+            while (result.next()) {
+                int id = result.getInt("id");
+                int bankAccountId = result.getInt("bankAccount_id");
+                int value = result.getInt("value");
+                String type = result.getString("type");
+                Timestamp transactionDate = result.getTimestamp("transaction_date");
+                Timestamp createdAt = result.getTimestamp("created_at");
+                int balance = result.getInt("balance");
+
+                // Adicionando a transação com o saldo
+                transactions.add(new Transaction(id, bankAccountId, value, type, transactionDate, createdAt, balance));
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro no método findAll: " + e.getMessage());
+            throw new DBException("Erro ao listar transações.", e);
+        }
+        return transactions;
+    }
+
+    public void clear() throws SQLException {
+        String sql = "DELETE FROM transactions";
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.executeUpdate();
+            System.out.println("Tabela de transações esvaziada.");
+        }
+    }
+
+    // Método para fechar a conexão
+    public void closeConnection() throws SQLException {
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("Conexão fechada com sucesso!");
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao fechar a conexão: " + e.getMessage());
+        }
+    }
+
     public double getSumOfTransactionsByBankAccountId(int bankAccountId) throws SQLException {
         double sum = 0;
         String sql = "SELECT SUM(value) FROM transactions WHERE bankaccount_id = ?";
@@ -135,5 +134,4 @@ public class TransactionDao {
         }
         return sum;
     }
-
 }

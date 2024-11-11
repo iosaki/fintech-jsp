@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <!DOCTYPE html>
@@ -6,12 +6,15 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Histórico de Transações</title>
-    <%@ include file="../../../partials/header.jsp" %>
+    <!-- Inclui o header.jsp -->
+    <%@ include file="../../partials/header.jsp" %>
+    <!-- Inclui o FontAwesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 <div class="container-fluid">
     <div class="row">
-        <%@ include file="../../../partials/menu.jsp" %>
+        <%@ include file="../../partials/menu.jsp" %>
         <main class="main-content col-md-10 ms-md-auto p-3">
             <div class="container">
                 <h2 class="mb-4">Histórico de Transações</h2>

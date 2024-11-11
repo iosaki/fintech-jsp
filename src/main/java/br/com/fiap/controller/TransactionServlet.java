@@ -3,7 +3,6 @@ package br.com.fiap.controller;
 import br.com.fiap.dao.BankAccountDao;
 import br.com.fiap.dao.TransactionDao;
 import br.com.fiap.exception.DBException;
-import br.com.fiap.model.BankAccount;
 import br.com.fiap.model.Transaction;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
@@ -48,12 +47,11 @@ public class TransactionServlet extends HttpServlet {
                 transactionDate = Timestamp.valueOf(transactionDateParam);
             }
 
-            // Calcula o saldo anterior da conta
-            int previousBalance = getAccountBalance(bankAccountId);
-            int newBalance = type.equalsIgnoreCase("deposit") ? previousBalance + value : previousBalance - value;
+            // Calcula o saldo da transação com base no tipo
+            int transactionBalance = type.equalsIgnoreCase("deposit") ? value : -value;
 
-            // Cria uma nova transação com o saldo atualizado
-            Transaction transaction = new Transaction(0, bankAccountId, value, type, transactionDate, createdAt, newBalance);
+            // Cria uma nova transação com o saldo calculado
+            Transaction transaction = new Transaction(0, bankAccountId, value, type, transactionDate, createdAt, transactionBalance);
 
             transactionDao.add(transaction);
             request.setAttribute("mensagem", "Transação cadastrada com sucesso!");
@@ -72,40 +70,37 @@ public class TransactionServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        System.out.println("action: " + action);
 
-        try {
-            if ("listTransactions".equals(action)) {
-                System.out.println("Fetching all transactions...");
-                List<Transaction> transactions = transactionDao.findAll();
+        if ("listTransactions".equals(action)) {
+            try {
+                // Obtém o email do usuário logado da sessão
+                String user = (String) request.getSession().getAttribute("user");
+                System.out.println("Iniciando o doGet com usuario" + user);
+
+                // Filtra as transações com base no email do usuário
+                List<Transaction> transactions = transactionDao.findAllByUserEmail(user);
                 request.setAttribute("transactions", transactions);
-                request.getRequestDispatcher("/views/pages/transactions/transactions_list.jsp").forward(request, response);
-
-            } else if ("newTransaction".equals(action)) {
-                request.getRequestDispatcher("/views/pages/transactions/transaction/transaction_new.jsp").forward(request, response);
-            } else {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Ação desconhecida: " + action);
+            } catch (DBException e) {
+                e.printStackTrace();
+                request.setAttribute("erro", "Erro ao listar transações.");
             }
-        } catch (DBException | SQLException e) {
-            e.printStackTrace();
-            request.setAttribute("erro", "Erro ao listar transações: " + e.getMessage());
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao processar a solicitação: " + e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro inesperado: " + e.getMessage());
+
+            request.getRequestDispatcher("/views/pages/transactions/transactions_list.jsp").forward(request, response);
+
+        } else if ("newTransaction".equals(action)) {
+            request.getRequestDispatcher("/views/pages/transactions/transaction/transaction_new.jsp").forward(request, response);
         }
     }
 
-    // Metodo auxiliar para obter o saldo atual da conta bancária
+    // Método auxiliar para obter o saldo atual da conta bancária
     private int getAccountBalance(int bankAccountId) throws SQLException, DBException {
         List<Transaction> transactions = transactionDao.findAll();
         int balance = 0;
         for (Transaction transaction : transactions) {
             if (transaction.getBankAccountId() == bankAccountId) {
-                balance = transaction.getBalance();
+                balance = transaction.getBalance(); // Obtém o saldo da última transação
             }
         }
         return balance;
     }
 }
-
