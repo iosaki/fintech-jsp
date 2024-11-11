@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @WebServlet("/transaction")
@@ -90,17 +91,42 @@ public class TransactionServlet extends HttpServlet {
         } else if ("newTransaction".equals(action)) {
             request.getRequestDispatcher("/views/pages/transactions/transaction/transaction_new.jsp").forward(request, response);
         }
-    }
+        // Exibir formulário de atualização
+        else if ("showUpdateForm".equals(action)) {
+            int transactionId = Integer.parseInt(request.getParameter("id"));
+            try {
+                Transaction transaction = transactionDao.findById(transactionId);
+                request.setAttribute("transaction", transaction);
 
-    // Método auxiliar para obter o saldo atual da conta bancária
-    private int getAccountBalance(int bankAccountId) throws SQLException, DBException {
-        List<Transaction> transactions = transactionDao.findAll();
-        int balance = 0;
-        for (Transaction transaction : transactions) {
-            if (transaction.getBankAccountId() == bankAccountId) {
-                balance = transaction.getBalance(); // Obtém o saldo da última transação
+                // Formatar a data de transação para o formato 'yyyy-MM-dd'T'HH:mm'
+                if (transaction.getTransactionDate() != null) {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+                    String formattedDate = dateFormat.format(transaction.getTransactionDate());
+                    request.setAttribute("formattedTransactionDate", formattedDate);
+                }
+
+                request.getRequestDispatcher("/views/pages/transactions/transaction/transaction_update.jsp").forward(request, response);
+            } catch (DBException | SQLException e) {
+                e.printStackTrace();
+                request.setAttribute("erro", "Erro ao carregar transação.");
+            }
+
+        }
+        // Exibir formulário de exclusão
+        else if ("deleteTransaction".equals(action)) {
+            int transactionId = Integer.parseInt(request.getParameter("id"));
+            try {
+                Transaction transaction = transactionDao.findById(transactionId);
+                request.setAttribute("transaction", transaction);
+                request.getRequestDispatcher("/views/pages/transactions/transaction/transaction_delete.jsp").forward(request, response);
+            } catch (DBException e) {
+                e.printStackTrace();
+                request.setAttribute("erro", "Erro ao carregar transação.");
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
         }
-        return balance;
     }
+
+
 }

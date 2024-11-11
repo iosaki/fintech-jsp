@@ -134,4 +134,41 @@ public class TransactionDao {
         }
         return sum;
     }
+
+    // Método para encontrar uma transação por ID
+    public Transaction findById(int transactionId) throws SQLException, DBException {
+        Transaction transaction = null;
+        String sql = "SELECT * FROM transactions WHERE id = ?";
+
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement stm = connection.prepareStatement(sql)) {
+
+            // Define o parâmetro para o id da transação
+            stm.setInt(1, transactionId);
+
+            try (ResultSet result = stm.executeQuery()) {
+                if (result.next()) {
+                    int id = result.getInt("id");
+                    int bankAccountId = result.getInt("bankAccount_id");
+                    int value = result.getInt("value");
+                    String type = result.getString("type");
+                    Timestamp transactionDate = result.getTimestamp("transaction_date");
+                    Timestamp createdAt = result.getTimestamp("created_at");
+                    int balance = result.getInt("balance");
+
+                    transaction = new Transaction(id, bankAccountId, value, type, transactionDate, createdAt, balance);
+                }
+            }
+
+            if (transaction == null) {
+                throw new DBException("Transação não encontrada.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DBException("Erro ao buscar transação por ID.", e);
+        }
+
+        return transaction;
+    }
 }
