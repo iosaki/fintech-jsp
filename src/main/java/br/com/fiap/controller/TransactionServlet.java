@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @WebServlet("/transaction")
@@ -124,6 +125,14 @@ public class TransactionServlet extends HttpServlet {
             try {
                 Transaction transaction = transactionDao.findById(transactionId);
                 request.setAttribute("transaction", transaction);
+
+                // Formatar a data de transação para o formato 'yyyy-MM-dd'T'HH:mm'
+                if (transaction.getTransactionDate() != null) {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+                    String formattedDate = dateFormat.format(transaction.getTransactionDate());
+                    request.setAttribute("formattedTransactionDate", formattedDate);
+                }
+
                 request.getRequestDispatcher("/views/pages/transactions/transaction/transaction_update.jsp").forward(request, response);
             } catch (DBException | SQLException e) {
                 e.printStackTrace();
@@ -132,7 +141,7 @@ public class TransactionServlet extends HttpServlet {
 
         }
         // Exibir formulário de exclusão
-        else if ("showDeleteForm".equals(action)) {
+        else if ("deleteTransaction".equals(action)) {
             int transactionId = Integer.parseInt(request.getParameter("id"));
             try {
                 Transaction transaction = transactionDao.findById(transactionId);

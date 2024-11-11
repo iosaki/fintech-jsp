@@ -19,7 +19,7 @@
         <form action="${pageContext.request.contextPath}/transaction?action=deleteTransaction" method="post">
           <input type="hidden" name="transactionId" value="${transaction.id}">
 
-          <p>Tem certeza de que deseja deletar esta transação de R$ ${transaction.value}, realizada em ${transaction.transaction_date}?</p>
+          <p>Tem certeza de que deseja deletar esta transação de R$ ${transaction.value}, realizada em ${transaction.transactionDate}?</p>
 
           <button type="submit" class="btn btn-danger">Deletar</button>
           <a href="${pageContext.request.contextPath}/transaction?action=listTransactions" class="btn btn-secondary">Cancelar</a>

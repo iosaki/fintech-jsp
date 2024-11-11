@@ -34,7 +34,7 @@
 
                     <div class="mb-3">
                         <label for="transaction_date" class="form-label">Data e Hora da Transação</label>
-                        <input type="datetime-local" class="form-control" id="transaction_date" name="transaction_date" value="${transaction.transaction_date}">
+                        <input type="datetime-local" class="form-control" id="transaction_date" name="transaction_date" value="${formattedTransactionDate}">
                     </div>
 
                     <button type="submit" class="btn btn-primary">Atualizar Transação</button>
